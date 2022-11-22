@@ -7,6 +7,8 @@ function App()
   const nameAscending = allCountryScores.sort((a, b) => a.name > b.name ? 1 : -1)
   const [sorting, setSorting] = useState("DES");
 
+  let all = [];
+
   const onClicked = () =>
   {
     if(sorting === "DES")
@@ -24,7 +26,7 @@ function App()
   {
     if(sorting === "DES")
     {
-      return country.scores.sort(((a, b) => b.s - a.s)).map(element => <p>{element.n}: {element.s}</p>)
+      return country.scores.sort((a, b) => b.s - a.s).map(element => <p>{element.n}: {element.s}</p>)
     }
 
     else
@@ -33,19 +35,35 @@ function App()
     }
   }
 
+
+
   const onAllSort = (country) =>
+  {
+    all = [...all, ...country.scores]
+
+    all.sort((a, b) => b.s - a.s)
+  }
+
+
+
+
+  const createWorldWide = (each) =>
   {
     if(sorting === "DES")
     {
-      return country.scores.map(element => <p>{element.n}: {element.s}</p>)
+      all.sort((a, b) => b.s - a.s)
     }
 
     else
     {
-      return country.scores.map(element => <p>{element.n}: {element.s}</p>)
+      all.sort((a, b) => a.s - b.s)
     }
+    console.log(each)
+
+    return <p>{each.n}: {each.s}</p>
   }
 
+  
   return (
     <div className="App">
       <header className="App-header">
@@ -57,9 +75,15 @@ function App()
           onAllSort(country)
         ))}
 
+        {all.map(each =>
+        (
+          createWorldWide(each)
+        ))}
+
         {nameAscending.map(country =>
         (
           <div>
+            
             <h1>{country.name}</h1>
 
             {onSort(country)}
@@ -71,3 +95,4 @@ function App()
 }
 
 export default App;
+
